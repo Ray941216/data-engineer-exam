@@ -2,3 +2,5 @@
 *.pyc
 *.png
 .venv/*
+*__pycache__*
+*.ipynb_*

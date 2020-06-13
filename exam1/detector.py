@@ -2,6 +2,7 @@ import os
 import csv
 import shutil
 import zipfile
+import pendulum as pdl
 
 from algorithm import Detector
 from plot import plot
@@ -15,6 +16,7 @@ def detect(path, detector):
         for row in rows:
             val = row.get('value')
             ret = detector.fit_predict(val)
+            # print(val, ret)
             pred.append(float(ret))
             vals.append(float(val))
     return vals, pred
@@ -33,8 +35,9 @@ if __name__ == '__main__':
 
         name = f'time-series/real_{i}.csv'
         path = archive.extract(member=name)
-
+        print(f'{pdl.now().to_datetime_string()}: working on {name}...')
         vals, pred = detect(path, detector)
         plot(name, vals, pred)
+        print(f'{pdl.now().to_datetime_string()}: {name} has done!')
 
     shutil.rmtree('time-series')
