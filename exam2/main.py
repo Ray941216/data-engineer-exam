@@ -15,7 +15,7 @@ if __name__ == '__main__':
         df_tr['datetime']
         .swifter
         .apply(
-            lambda x: pdl.from_format(x, 'YYYY-MM-DD HH:mm:ss.SSS').to_datetime_string()
+            lambda x: pdl.parse(x).format('YYYY-MM-DD HH:mm:00')
         )
     )
 
@@ -23,7 +23,7 @@ if __name__ == '__main__':
         df_te['datetime']
         .swifter
         .apply(
-            lambda x: pdl.from_format(x, 'YYYY-MM-DD HH:mm:ss.SSS').to_datetime_string()
+            lambda x: pdl.parse(x).format('YYYY-MM-DD HH:mm:00')
         )
     )
 
