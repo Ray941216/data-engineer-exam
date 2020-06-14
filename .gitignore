@@ -1,6 +1,6 @@
 .DS_Store
 *.pyc
-*.png
 .venv/*
 *__pycache__*
 *.ipynb_*
+*.vscode/*

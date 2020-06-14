@@ -15,6 +15,7 @@ ipython = "*"
 click = "^7.0"
 scikit-learn = "^0.23.1"
 pendulum = "^2.1.0"
+swifter = "^0.305"
 
 [tool.poetry.dev-dependencies]
 
