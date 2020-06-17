@@ -13,6 +13,7 @@ if __name__ == "__main__":
     if not os.path.exists("result"):
         os.mkdir("result")
 
+    sensitive = 0  # control the detector sensitive Default=0
     win = 22
 
     dataset_te = dataset(task="test", window_size=win)
@@ -56,7 +57,10 @@ if __name__ == "__main__":
     report["anomaly"] = [0 for x in report.index]
     report.loc[
         (
-            (report["anomaly_prob"] > np.quantile(report["anomaly_prob"], 0.997))
+            (
+                report["anomaly_prob"]
+                > np.quantile(report["anomaly_prob"], (0.997 - sensitive * 1e-3))
+            )
             & (report["anomaly_prob"] > 0.7)
         ),
         "anomaly",
@@ -76,4 +80,3 @@ if __name__ == "__main__":
     pd.merge(
         pd.read_csv("../exam2/result/test.csv"), report_agg, how="left", on=["datetime"]
     ).to_csv("./result/predict.csv", index=False)
-
