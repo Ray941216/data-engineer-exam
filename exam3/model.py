@@ -14,16 +14,14 @@ from tqdm import tqdm
 class Model(nn.Module):
     def __init__(self, features):
         super(Model, self).__init__()
-        self.lstm_in = nn.LSTM(
-            input_size=features, hidden_size=3, batch_first=True
-        )
-        self.dnn_out = nn.Linear(
-            in_features=3, out_features=features
-        )
+        self.lstm_in = nn.LSTM(input_size=features, hidden_size=3, batch_first=True)
+        self.dnn_out = nn.Linear(in_features=3, out_features=features)
 
     def forward(self, x):
         output, (ht, ct) = self.lstm_in(x)
         return F.softmax(self.dnn_out(F.relu(ht.view(-1, ht.size(-1)))), dim=-1)
+
+
 class dataset(Dataset):
     def __init__(self, window_size=5, step_size=1, task="train", evaluate_ratio=0.2):
         super().__init__()
@@ -70,7 +68,15 @@ class dataset(Dataset):
         return {
             "x": torch.tensor(self.data[x : x + self.window_size], dtype=torch.float),
             # "y": torch.tensor(self.data[x + self.window_size], dtype=torch.float),
-            "y": torch.tensor((self.onehot.inverse_transform(self.data[x + self.window_size].reshape(1, -1)) - 1), dtype=torch.long),
+            "y": torch.tensor(
+                (
+                    self.onehot.inverse_transform(
+                        self.data[x + self.window_size].reshape(1, -1)
+                    )
+                    - 1
+                ),
+                dtype=torch.long,
+            ),
         }
 
     def __len__(self):

@@ -17,8 +17,8 @@ from model import Model, dataset
 @click.option("--window", type=click.INT, default=22, help="Number of window size.")
 @click.option("--step", type=click.INT, default=1, help="Number of step size.")
 def train_model(epochs=10, window=22, step=1):
-    if not os.path.isdir('./model'):
-        os.mkdir('./model')
+    if not os.path.isdir("./model"):
+        os.mkdir("./model")
 
     dataset_tr = dataset(task="train", window_size=window, step_size=step)
     dataset_ev = dataset(task="evaluate", window_size=window, step_size=step)
