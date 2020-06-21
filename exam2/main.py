@@ -3,8 +3,10 @@ import os
 import pandas as pd
 import swifter
 
+def parser(x):
+    return ":".join(x.split(":")[:-1] + ["00"])
 
-def agg(filename="train"):
+def agg(filename="train"):  # w/o grouping agg methods
     if not os.path.exists(f"./data/{filename}_need_aggregate.csv"):
         raise FileNotFoundError
 
@@ -12,7 +14,7 @@ def agg(filename="train"):
 
     result = {}
     for x in df.itertuples():
-        dt = ":".join(x[1].split(":")[:-1] + ["00"])
+        dt = parser(x[1])
         if dt in result:
             result[dt].append(x[2])
         else:
@@ -23,7 +25,7 @@ def agg(filename="train"):
     )
 
 
-def time_idx_resample(filename="train"):
+def time_idx_resample(filename="train"):  # time index resample
     if not os.path.exists(f"./data/{filename}_need_aggregate.csv"):
         raise FileNotFoundError
 
@@ -39,20 +41,19 @@ def time_idx_resample(filename="train"):
     )
 
 
-def parser(x):
-    return ":".join(x.split(":")[:-1] + ["00"])
-
-
 if __name__ == "__main__":
     if not os.path.exists("result"):
         os.mkdir("result")
 
+    # w/o grouping agg methods
     # agg("train")
     # agg("test")
 
+    # time index resample
     time_idx_resample("train")
     time_idx_resample("test")
 
+    # w/ grouping method
     # df_tr = pd.read_csv("./data/train_need_aggregate.csv")
     # df_te = pd.read_csv("./data/test_need_aggregate.csv")
 
