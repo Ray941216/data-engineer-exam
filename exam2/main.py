@@ -23,6 +23,22 @@ def agg(filename="train"):
     )
 
 
+def time_idx_resample(filename="train"):
+    if not os.path.exists(f"./data/{filename}_need_aggregate.csv"):
+        raise FileNotFoundError
+
+    (
+        pd.read_csv(
+            f"./data/{filename}_need_aggregate.csv",
+            index_col="datetime",
+            parse_dates=True,
+        )
+        .resample("T")
+        .agg({"EventId": lambda x: x.tolist()})
+        .to_csv(f"./result/{filename}.csv")
+    )
+
+
 def parser(x):
     return ":".join(x.split(":")[:-1] + ["00"])
 
@@ -31,8 +47,11 @@ if __name__ == "__main__":
     if not os.path.exists("result"):
         os.mkdir("result")
 
-    agg("train")
-    agg("test")
+    # agg("train")
+    # agg("test")
+
+    time_idx_resample("train")
+    time_idx_resample("test")
 
     # df_tr = pd.read_csv("./data/train_need_aggregate.csv")
     # df_te = pd.read_csv("./data/test_need_aggregate.csv")
